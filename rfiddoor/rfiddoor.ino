@@ -61,13 +61,10 @@ void setup() {
 void loop() {
   // Ready
   instructionReady();
-  ledOrange();
 
   // handle doorknob
   if (readDoorknob()) {
-    ledGreen();
     openCloseDoor();
-    return;
   }
 
   // handle rfid access
@@ -75,13 +72,10 @@ void loop() {
     // rfid present
     if (badgeAllowed(getRfidNumber())) {
       // rfid allowed
-      ledGreen();
       instructionSuccess();
-      delay(1000);
       openCloseDoor();
     } else {
       // rfid not allowed
-      ledRed();
       instructionFail();
     }
   }
@@ -94,6 +88,7 @@ boolean readDoorknob() {
 
 void instructionReady() {
   Serial.println("LCD: ready");
+  ledOrange();
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Ready. Please");
@@ -103,6 +98,7 @@ void instructionReady() {
 
 void instructionFail() {
   Serial.println("LCD: failed");
+  ledRed();
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Not authorized");
@@ -148,12 +144,14 @@ void resetAlarmCount() {
 
 void instructionSuccess() {
   Serial.println("LCD: success");
+  ledGreen();
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Welcome badge");
   lcd.setCursor(0, 1);
   lcd.print(getRfidNumber());
   resetAlarmCount();
+  delay(1000);
 }
 
 boolean badgeAllowed(long badgeId) {
