@@ -190,6 +190,7 @@ long getRfidNumber() {
 }
 
 void openCloseDoor() {
+  ledGreen();
   openDoor();
   delay(doorCloseDelay);
   closeDoor();
